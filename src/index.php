@@ -27,7 +27,7 @@ try {
 <body>
 
 <header>
-    <h1>Vide-Grenier</h1>
+    <h1>Vide-Grenier mofiié</h1>
     <p>Trouvez les meilleures affaires du coin</p>
 </header>
 

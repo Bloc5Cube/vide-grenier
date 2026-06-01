@@ -1,16 +1,19 @@
 <?php
-$host = getenv('DB_HOST');
-$user = getenv('DB_USER');
-$pass = getenv('DB_PASS');
-$dbname = getenv('DB_NAME');
+$host = getenv("DB_HOST");
+$user = getenv("DB_USER");
+$pass = getenv("DB_PASS");
+$dbname = getenv("DB_NAME");
 
 try {
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $user, $pass);
+    $pdo = new PDO(
+        "mysql:host=$host;dbname=$dbname;charset=utf8mb4",
+        $user,
+        $pass,
+    );
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     $stmt = $pdo->query("SELECT * FROM annonces ORDER BY date_creation DESC");
     $annonces = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
 } catch (PDOException $e) {
     $error = "Erreur de connexion à la base de données : " . $e->getMessage();
 }
@@ -27,20 +30,30 @@ try {
 <body>
 
 <header>
-    <h1>Vide-Grenier</h1>
+    <h1>Vide-Grenier modifié</h1>
     <p>Trouvez les meilleures affaires du coin</p>
 </header>
 
 <main>
-    <?php if (isset($error)) echo "<div class='error'>".htmlspecialchars($error)."</div>"; ?>
+    <?php if (isset($error)) {
+        echo "<div class='error'>" . htmlspecialchars($error) . "</div>";
+    } ?>
 
     <div class="grid">
         <?php foreach ($annonces ?? [] as $a): ?>
             <div class="card">
-                <h2><?= htmlspecialchars($a['titre']) ?></h2>
-                <div class="date"><?= date('d/m/Y', strtotime($a['date_creation'])) ?></div>
-                <p><?= nl2br(htmlspecialchars($a['description'])) ?></p>
-                <div class="price"><?= number_format($a['prix'], 2, ',', ' ') ?> €</div>
+                <h2><?= htmlspecialchars($a["titre"]) ?></h2>
+                <div class="date"><?= date(
+                    "d/m/Y",
+                    strtotime($a["date_creation"]),
+                ) ?></div>
+                <p><?= nl2br(htmlspecialchars($a["description"])) ?></p>
+                <div class="price"><?= number_format(
+                    $a["prix"],
+                    2,
+                    ",",
+                    " ",
+                ) ?> €</div>
             </div>
         <?php endforeach; ?>
 
